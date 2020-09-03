@@ -4,7 +4,7 @@ html {
 
 body {
   font-family: helvetica, arial, sans-serif;
-  background: #e8e8e8 url('paris.jpg') left top no-repeat;
+  background: #e8e8e8 url("paris.jpg") left top no-repeat;
   background-position: bottom;
   text-align: center;
 }
@@ -31,7 +31,7 @@ body {
 }
 
 #question-view {
-  background: #0094FF;
+  background: #0094ff;
   color: #fff;
   padding: 10px;
   opacity: 0.9;
@@ -45,11 +45,12 @@ body {
   filter: alpha(opacity=90); /* For IE8 and earlier */
 }
 
-#stats-view .stats, #stats-view .streak  {
+#stats-view .stats,
+#stats-view .streak {
   display: inline;
 }
 
-#stats-view .stats  {
+#stats-view .stats {
   margin-right: 15px;
 }
 
@@ -63,7 +64,7 @@ h1 {
   display: inline;
 }
 
-#question-view>p {
+#question-view > p {
   font-size: 1.5em;
   margin-bottom: 15px;
   display: inline;
@@ -86,4 +87,13 @@ h1 {
   text-align: center;
   opacity: 0.9;
   filter: alpha(opacity=90); /* For IE8 and earlier */
+}
+
+.previousGuess {
+  padding: 0 0 15px;
+  font-size: 22px;
+}
+
+.previousGuess span {
+  color: green;
 }

@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import * as firebase from 'firebase'
-import Question from './Question'
-import Answer from './Answer'
-import Stats from './Stats'
-import Revision from './Revision'
+import React, { Component } from "react";
+import * as firebase from "firebase";
+import Question from "./Question";
+import Answer from "./Answer";
+import Stats from "./Stats";
+import Revision from "./Revision";
 
 let audioContext;
 
@@ -13,13 +13,12 @@ const firebaseConfig = {
   databaseURL: "https://frenchverbs.firebaseio.com",
   projectId: "firebase-frenchverbs",
   storageBucket: "",
-  messagingSenderId: "156765582776"
+  messagingSenderId: "156765582776",
 };
 
 class VerbDrillContainer extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       data: [],
@@ -28,42 +27,65 @@ class VerbDrillContainer extends Component {
       totalAnswered: 0,
       totalCorrect: 0,
       streak: 0,
-      showRevision: false
-    }
+      showRevision: false,
+      previous: null,
+    };
 
-    this.checkAnswer = this.checkAnswer.bind(this)
-
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   componentWillMount() {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new window.AudioContext();
 
-    window.AudioContext = window.AudioContext || window.webkitAudioContext
-    audioContext = new window.AudioContext()
-
-    firebase.initializeApp(firebaseConfig)
-    firebase.database().ref('/verbs').once('value').then((snapshot) => {
-      const question = this.getQuestion({verbs: snapshot.val()})
-      this.setState({
-        data: {verbs: snapshot.val()},
-        question
-      })
-    })
+    firebase.initializeApp(firebaseConfig);
+    firebase
+      .database()
+      .ref("/verbs")
+      .once("value")
+      .then((snapshot) => {
+        const question = this.getQuestion({ verbs: snapshot.val() });
+        this.setState({
+          data: { verbs: snapshot.val() },
+          question,
+        });
+      });
   }
 
   /*
    * Display the question, answer and stats components
-  */
+   */
   render() {
     return (
       <div className="container">
         <div className="row">
-          <div id="question-card" className="col-xs-11 col-sm-11 col-md-6 col-lg-6 col-centered">
-            <Question question={this.state.question} pronoun={this.state.question.pronoun} />
-            <Answer pronoun={this.state.question.pronoun} checkAnswer={this.checkAnswer} onTouchEnd={this.handleTouchEnd} />
-            <Stats totalAnswered={this.state.totalAnswered} totalCorrect={this.state.totalCorrect} streak={this.state.streak} />
+          <div
+            id="question-card"
+            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
+          >
+            <Question
+              question={this.state.question}
+              pronoun={this.state.question.pronoun}
+            />
+            <Answer
+              previous={this.state.previous}
+              pronoun={this.state.question.pronoun}
+              checkAnswer={this.checkAnswer}
+              onTouchEnd={this.handleTouchEnd}
+            />
+            <Stats
+              totalAnswered={this.state.totalAnswered}
+              totalCorrect={this.state.totalCorrect}
+              streak={this.state.streak}
+            />
           </div>
-          <div id="revision-card" className="col-xs-11 col-sm-11 col-md-6 col-lg-6 col-centered">
-            { this.state.showRevision && <Revision data={this.state.question.revisionData} /> }
+          <div
+            id="revision-card"
+            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
+          >
+            {this.state.showRevision && (
+              <Revision data={this.state.question.revisionData} />
+            )}
           </div>
         </div>
       </div>
@@ -72,57 +94,80 @@ class VerbDrillContainer extends Component {
 
   /*
    * Randomly select a new verb, tense and pronoun, and return a question object
-  */
+   */
   getQuestion(data) {
-    const verbIndex = this.getRandomIndex(0, (data.verbs.length - 1));
-    const tenseIndex = this.getRandomIndex(0, (data.verbs[verbIndex].tenses.length - 1));
-    const pronounIndex = this.getRandomIndex(0, (data.verbs[verbIndex].tenses[tenseIndex].pronouns.length - 1));
+    const verbIndex = this.getRandomIndex(0, data.verbs.length - 1);
+    const tenseIndex = this.getRandomIndex(
+      0,
+      data.verbs[verbIndex].tenses.length - 1
+    );
+    const pronounIndex = this.getRandomIndex(
+      0,
+      data.verbs[verbIndex].tenses[tenseIndex].pronouns.length - 1
+    );
     const questionData = {
-      'infinitive': data.verbs[verbIndex].infinitive,
-      'translation': data.verbs[verbIndex].translation,
-      'tense': data.verbs[verbIndex].tenses[tenseIndex].name,
-      'pronoun': data.verbs[verbIndex].tenses[tenseIndex].pronouns[pronounIndex],
-      'revisionData': data.verbs[verbIndex]
+      infinitive: data.verbs[verbIndex].infinitive,
+      translation: data.verbs[verbIndex].translation,
+      tense: data.verbs[verbIndex].tenses[tenseIndex].name,
+      pronoun: data.verbs[verbIndex].tenses[tenseIndex].pronouns[pronounIndex],
+      revisionData: data.verbs[verbIndex],
     };
     return questionData;
   }
 
   /*
    * Return a random integer with max and min.  Used to select a question array index.
-  */
+   */
   getRandomIndex(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   /*
    * Check submitted answer against data, disregarding accents.
-  */
+   */
   checkAnswer(event) {
     event.preventDefault();
-    this.setState({ showRevision: false });
 
-    const answerWithoutAccents = this.foldAccents(this.state.question.pronoun.answer);
     const answer = this.state.question.pronoun.answer.toLowerCase();
     const guess = event.target.guess.value.toLowerCase().trim();
 
-    if (guess === answer || guess === answerWithoutAccents) {
-      this.randomPositiveSound();
-      this.setState({ totalAnswered: this.state.totalAnswered + 1, totalCorrect: this.state.totalCorrect + 1, streak: this.state.streak + 1, question: this.getQuestion(this.state.data) });
-      event.target.guess.value = '';
+    if (guess === answer) {
+      this.setState({
+        totalAnswered: this.state.totalAnswered + 1,
+        totalCorrect: this.state.totalCorrect + 1,
+        streak: this.state.streak + 1,
+        question: this.getQuestion(this.state.data),
+        showRevision: false,
+        previous: `${this.state.question.pronoun.pronoun} ${this.state.question.pronoun.answer}`,
+      });
+      event.target.guess.value = "";
     } else {
-      this.randomNegativeSound();
-      event.target.guess.value = '';
-      this.setState({ streak: 0, totalAnswered: this.state.totalAnswered + 1, showRevision: true });
+      this.setState({
+        streak: 0,
+        totalAnswered: this.state.totalAnswered + 1,
+        showRevision: true,
+        previous: null,
+      });
     }
   }
 
   /*
    * Substitute accented characters in a string
-  */
+   */
   foldAccents(inputString) {
-    const accentMap = {'á':'a', 'é':'e', 'ê':'e', 'í':'i', 'î':'i', 'ó':'o','ú':'u'};
-    if (!inputString) { return ''; }
-    let returnString = '';
+    const accentMap = {
+      á: "a",
+      é: "e",
+      ê: "e",
+      í: "i",
+      î: "i",
+      ó: "o",
+      ú: "u",
+    };
+    if (!inputString) {
+      return "";
+    }
+    let returnString = "";
     for (let i = 0; i < inputString.length; i++) {
       returnString += accentMap[inputString.charAt(i)] || inputString.charAt(i);
     }
@@ -133,7 +178,11 @@ class VerbDrillContainer extends Component {
     data.verbs.forEach((verb, verbId) => {
       verb.tenses.forEach((tense, tenseId) => {
         tense.pronouns.forEach((pronoun, pronounId) => {
-          data.verbs[verbId].tenses[tenseId].pronouns[pronounId].pronoun = this.capitalise(data.verbs[verbId].tenses[tenseId].pronouns[pronounId].pronoun);
+          data.verbs[verbId].tenses[tenseId].pronouns[
+            pronounId
+          ].pronoun = this.capitalise(
+            data.verbs[verbId].tenses[tenseId].pronouns[pronounId].pronoun
+          );
         });
       });
     });
@@ -146,7 +195,7 @@ class VerbDrillContainer extends Component {
 
   /*
    * Hack to unlock HTML5 Audio on iOS
-  */
+   */
   handleTouchEnd() {
     const buffer = audioContext.createBuffer(1, 1, 22050);
     const sourceBuffer = audioContext.createBufferSource();
@@ -165,8 +214,8 @@ class VerbDrillContainer extends Component {
 
   loadSound(file) {
     const request = new XMLHttpRequest();
-    request.open('GET', file, true);
-    request.responseType = 'arraybuffer';
+    request.open("GET", file, true);
+    request.responseType = "arraybuffer";
     request.onload = () => {
       audioContext.decodeAudioData(request.response, (buffer) => {
         this.playSound(buffer);
@@ -176,15 +225,19 @@ class VerbDrillContainer extends Component {
   }
 
   randomPositiveSound() {
-    const positives = ['sounds/oooooui.mp3', 'sounds/oui-tres-bien.mp3', 'sounds/voila.mp3', 'sounds/exactement.mp3'];
+    const positives = [
+      "sounds/oooooui.mp3",
+      "sounds/oui-tres-bien.mp3",
+      "sounds/voila.mp3",
+      "sounds/exactement.mp3",
+    ];
     this.loadSound(positives[Math.floor(Math.random() * positives.length)]);
   }
 
   randomNegativeSound() {
-    const negatives = ['sounds/cest-non.mp3', 'sounds/je-repond-non.mp3'];
+    const negatives = ["sounds/cest-non.mp3", "sounds/je-repond-non.mp3"];
     this.loadSound(negatives[Math.floor(Math.random() * negatives.length)]);
   }
-
 }
 
-export default VerbDrillContainer
+export default VerbDrillContainer;
