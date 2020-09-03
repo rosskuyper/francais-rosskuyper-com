@@ -1,19 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 class Question extends Component {
   render() {
     return (
       <div id="question-view">
-        <h1>{this.props.question.infinitive} - {this.props.question.tense}</h1>
+        <h1>
+          {this.props.question.infinitive} - {this.props.question.tense} -{" "}
+          {this.props.pronoun.pronoun}
+        </h1>
         <p>{this.props.pronoun.english}</p>
       </div>
-    )
+    );
   }
 }
 
 Question.defaultProps = {
-  question: '',
-  pronoun: {}
-}
+  question: "",
+  pronoun: {},
+};
 
-export default Question
+export default Question;
