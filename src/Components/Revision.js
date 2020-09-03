@@ -1,17 +1,16 @@
-import React, { Component } from 'react'
-import { Table, Thead, Tbody, Tr, Th } from 'react-super-responsive-table'
-import RevisionRow from './RevisionRow'
+import React, { Component } from "react";
+import { Table, Thead, Tbody, Tr, Th } from "react-super-responsive-table";
+import RevisionRow from "./RevisionRow";
 
-import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
-
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 class Revision extends Component {
-
   render() {
-
     let rows = [];
     this.props.data.tenses[0].pronouns.forEach((pronoun, id) => {
-      rows.push(<RevisionRow key={id} data={this.props.data} pronounIndex={id} />)
+      rows.push(
+        <RevisionRow key={id} data={this.props.data} pronounIndex={id} />
+      );
     });
 
     return (
@@ -22,14 +21,12 @@ class Revision extends Component {
               <Th>Pronoun</Th>
               <Th>Present</Th>
               <Th>Imparfait</Th>
-              <Th>Passé Composé</Th>
+              <Th>P. Composé</Th>
               <Th>Futur</Th>
               <Th>Conditionnel</Th>
             </Tr>
           </Thead>
-          <Tbody>
-            {rows}
-          </Tbody>
+          <Tbody>{rows}</Tbody>
         </Table>
       </div>
     );
@@ -38,7 +35,7 @@ class Revision extends Component {
 
 Revision.defaultProps = {
   data: [],
-  showRevisionTable: false
-}
+  showRevisionTable: false,
+};
 
-export default Revision
+export default Revision;
