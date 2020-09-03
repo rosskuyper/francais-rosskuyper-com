@@ -5,7 +5,7 @@ import Stats from "./Stats";
 import Revision from "./Revision";
 import GuessHistory from "./GuessHistory";
 
-import verbData from "../verbs.json";
+import verbData from "../data/verbs.json";
 
 let audioContext;
 
@@ -13,12 +13,10 @@ class VerbDrillContainer extends Component {
   constructor(props) {
     super(props);
 
-    const { verbs } = verbData;
-
-    const question = this.getQuestion({ verbs });
+    const question = this.getQuestion(verbData);
 
     this.state = {
-      data: verbs,
+      data: verbData,
       question: question,
       history: [],
       pronoun: {},

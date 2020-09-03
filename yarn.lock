@@ -2638,6 +2638,29 @@ forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
 
+french-contractions@2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/french-contractions/-/french-contractions-2.17.0.tgz#759c78d3a07e25c61e7f6f217b16949721ad8d5e"
+  integrity sha512-nWTQgHhMkj7L+inEo10D4tAkzv+j4TEjC5TojLTaQy32yWDI7tuiL94LxdNg+Wo98mUJ8kWEKyT6qh8OC0E9eg==
+
+french-verbs-lefff@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/french-verbs-lefff/-/french-verbs-lefff-0.10.0.tgz#9b65b9e01bb45287d0af997f367e3bb25126c27b"
+  integrity sha512-qy30qEm3MSvWJtrDTNmQZnDF+OPPjZCwKCeJK3dS3632J2XVzhnxzT96KlV4ea6snM1o3vB/oOIAMztpELwSXA==
+
+french-verbs-transitive@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/french-verbs-transitive/-/french-verbs-transitive-0.10.0.tgz#d58937dde4f1c5094fcef2ff678631d25cbfa854"
+  integrity sha512-qltlKnD5JqI6Wb2yk4hfa7+Hb/AkDKwLyL3tabgpyDzUMhjCVGL/H7nBaG9fB76WP0OZQHnxED+KZtFyxj2ymA==
+
+french-verbs@^2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/french-verbs/-/french-verbs-2.17.0.tgz#77b2a520a537e4cb1f48b7fd0382d4f9c938bd10"
+  integrity sha512-yrwV8Uu7gaClmsgStaZFxJm2p3YpeofWThyVksCtMJsM/gzXsZV+XP6NFbbnE+DhviKOQYaDrrihpHbRKMmYBw==
+  dependencies:
+    french-contractions "2.17.0"
+    french-verbs-transitive "0.10.0"
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
