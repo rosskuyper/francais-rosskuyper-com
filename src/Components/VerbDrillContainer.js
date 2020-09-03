@@ -4,6 +4,7 @@ import Question from "./Question";
 import Answer from "./Answer";
 import Stats from "./Stats";
 import Revision from "./Revision";
+import GuessHistory from "./GuessHistory";
 
 let audioContext;
 
@@ -23,6 +24,7 @@ class VerbDrillContainer extends Component {
     this.state = {
       data: [],
       question: [],
+      history: [],
       pronoun: {},
       totalAnswered: 0,
       totalCorrect: 0,
@@ -89,6 +91,13 @@ class VerbDrillContainer extends Component {
               <Revision data={this.state.question.revisionData} />
             )}
           </div>
+
+          <div
+            id="history-card"
+            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
+          >
+            <GuessHistory history={this.state.history} />
+          </div>
         </div>
       </div>
     );
@@ -130,17 +139,24 @@ class VerbDrillContainer extends Component {
   checkAnswer(event) {
     event.preventDefault();
 
-    const answer = this.state.question.pronoun.answer.toLowerCase();
+    const { question } = this.state;
+
+    const answer = question.pronoun.answer.toLowerCase();
     const guess = event.target.guess.value.toLowerCase().trim();
 
-    if (guess === answer) {
+    const isCorrect = guess === answer;
+
+    const history = [{ question, guess, isCorrect }, ...this.state.history];
+
+    if (isCorrect) {
       this.setState({
         totalAnswered: this.state.totalAnswered + 1,
         totalCorrect: this.state.totalCorrect + 1,
         streak: this.state.streak + 1,
         question: this.getQuestion(this.state.data),
         showRevision: false,
-        previous: `${this.state.question.pronoun.pronoun} ${this.state.question.pronoun.answer}`,
+        previous: `${question.pronoun.pronoun} ${question.pronoun.answer}`,
+        history,
       });
       event.target.guess.value = "";
     } else {
@@ -149,6 +165,7 @@ class VerbDrillContainer extends Component {
         totalAnswered: this.state.totalAnswered + 1,
         showRevision: true,
         previous: null,
+        history,
       });
     }
   }

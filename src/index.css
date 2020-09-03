@@ -97,3 +97,11 @@ h1 {
 .previousGuess span {
   color: green;
 }
+
+.guess-correct > :last-child {
+  color: green;
+}
+
+.guess-incorrect > :last-child {
+  color: red;
+}
