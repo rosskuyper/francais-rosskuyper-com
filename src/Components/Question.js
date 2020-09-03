@@ -8,7 +8,6 @@ class Question extends Component {
           {this.props.question.infinitive} - {this.props.question.tense} -{" "}
           {this.props.pronoun.pronoun}
         </h1>
-        <p>{this.props.pronoun.english}</p>
       </div>
     );
   }
