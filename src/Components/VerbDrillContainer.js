@@ -1,29 +1,25 @@
 import React, { Component } from "react";
-import * as firebase from "firebase";
 import Question from "./Question";
 import Answer from "./Answer";
 import Stats from "./Stats";
 import Revision from "./Revision";
 import GuessHistory from "./GuessHistory";
 
-let audioContext;
+import verbData from "../verbs.json";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAyhciG0WcfP6ZAEdaGErDslc966XO2vus",
-  authDomain: "frenchverbs.firebaseapp.com",
-  databaseURL: "https://frenchverbs.firebaseio.com",
-  projectId: "firebase-frenchverbs",
-  storageBucket: "",
-  messagingSenderId: "156765582776",
-};
+let audioContext;
 
 class VerbDrillContainer extends Component {
   constructor(props) {
     super(props);
 
+    const { verbs } = verbData;
+
+    const question = this.getQuestion({ verbs });
+
     this.state = {
-      data: [],
-      question: [],
+      data: verbs,
+      question: question,
       history: [],
       pronoun: {},
       totalAnswered: 0,
@@ -39,19 +35,6 @@ class VerbDrillContainer extends Component {
   componentWillMount() {
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new window.AudioContext();
-
-    firebase.initializeApp(firebaseConfig);
-    firebase
-      .database()
-      .ref("/verbs")
-      .once("value")
-      .then((snapshot) => {
-        const question = this.getQuestion({ verbs: snapshot.val() });
-        this.setState({
-          data: { verbs: snapshot.val() },
-          question,
-        });
-      });
   }
 
   /*
