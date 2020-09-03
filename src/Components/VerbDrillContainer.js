@@ -63,21 +63,23 @@ class VerbDrillContainer extends Component {
             id="question-card"
             className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
           >
-            <Question
-              question={this.state.question}
-              pronoun={this.state.question.pronoun}
-            />
-            <Answer
-              previous={this.state.previous}
-              pronoun={this.state.question.pronoun}
-              checkAnswer={this.checkAnswer}
-              onTouchEnd={this.handleTouchEnd}
-            />
-            <Stats
-              totalAnswered={this.state.totalAnswered}
-              totalCorrect={this.state.totalCorrect}
-              streak={this.state.streak}
-            />
+            <div>
+              <Question
+                question={this.state.question}
+                pronoun={this.state.question.pronoun}
+              />
+              <Answer
+                previous={this.state.previous}
+                pronoun={this.state.question.pronoun}
+                checkAnswer={this.checkAnswer}
+                onTouchEnd={this.handleTouchEnd}
+              />
+              <Stats
+                totalAnswered={this.state.totalAnswered}
+                totalCorrect={this.state.totalCorrect}
+                streak={this.state.streak}
+              />
+            </div>
           </div>
           <div
             id="revision-card"

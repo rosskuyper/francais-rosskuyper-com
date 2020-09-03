@@ -19,9 +19,11 @@ body {
 }
 
 #question-card {
+  margin-top: 30px;
+}
+
+#question-card > div {
   background: #fff;
-  margin: 30px auto 0 auto;
-  padding: 0;
   text-align: center;
   opacity: 0.9;
   filter: alpha(opacity=90); /* For IE8 and earlier */
