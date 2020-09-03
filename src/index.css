@@ -6,7 +6,6 @@ body {
   font-family: helvetica, arial, sans-serif;
   background: #e8e8e8 url("paris.jpg") left top no-repeat;
   background-position: bottom;
-  text-align: center;
 }
 
 .bold {
@@ -86,7 +85,6 @@ h1 {
   background: #fff;
   margin: 15px auto 0 auto;
   padding: 15px;
-  text-align: center;
   opacity: 0.9;
   filter: alpha(opacity=90); /* For IE8 and earlier */
 }
