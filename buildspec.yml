@@ -4,9 +4,9 @@ version: 0.2
 env:
   variables:
     NODE_ENV: "production"
-  # parameter-store:
-  #   CDN_S3_BUCKET_NAME: '/francais-rosskuyper-com/web_cdn_bucket_name'
-  #   CDN_DISTRIBUTION_ID: '/francais-rosskuyper-com/cloudfront_id'
+  parameter-store:
+    CDN_S3_BUCKET_NAME: "/francais-rosskuyper-com/web_cdn_bucket_name"
+    CDN_DISTRIBUTION_ID: "/francais-rosskuyper-com/cloudfront_id"
 
 phases:
   install:
@@ -32,7 +32,7 @@ phases:
       - terraform plan -out="$CODEBUILD_SRC_DIR/infra/main.tf.plan"
       - terraform apply -auto-approve "$CODEBUILD_SRC_DIR/infra/main.tf.plan"
       - cd "$CODEBUILD_SRC_DIR"
-      # - aws s3 cp --recursive "./public/" "s3://$CDN_S3_BUCKET_NAME/"
-      # - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --invalidation-batch "Paths={Quantity=1,Items=[/*]},CallerReference=$(date +%s)"
+      - aws s3 cp --recursive "./public/" "s3://$CDN_S3_BUCKET_NAME/"
+      - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --invalidation-batch "Paths={Quantity=1,Items=[/*]},CallerReference=$(date +%s)"
     finally:
       - rm -f "$CODEBUILD_SRC_DIR/infra/main.tf.plan"
