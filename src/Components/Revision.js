@@ -18,12 +18,18 @@ class Revision extends Component {
         <Table className="table table-striped">
           <Thead>
             <Tr>
+              {/* Tense order matters and is set within the data */}
               <Th>Pronoun</Th>
               <Th>Present</Th>
               <Th>Imparfait</Th>
-              <Th>P. Composé</Th>
               <Th>Futur</Th>
-              <Th>Conditionnel</Th>
+              <Th>P. Composé</Th>
+              <Th>Plus-que-parfait</Th>
+              <Th>F. Antérieur</Th>
+              <Th>Subj. Pres.</Th>
+              <Th>Subj. Passé</Th>
+              <Th>Cond. Pres.</Th>
+              <Th>Cond. Passé</Th>
             </Tr>
           </Thead>
           <Tbody>{rows}</Tbody>

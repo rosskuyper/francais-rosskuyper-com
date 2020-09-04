@@ -5,7 +5,7 @@ import Stats from "./Stats";
 import Revision from "./Revision";
 import GuessHistory from "./GuessHistory";
 
-import verbData from "../data/verbs.json";
+import verbData from "../verbs.json";
 
 let audioContext;
 
@@ -40,12 +40,9 @@ class VerbDrillContainer extends Component {
    */
   render() {
     return (
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
-          <div
-            id="question-card"
-            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
-          >
+          <div id="question-card" className="col-xs-11 col-centered">
             <div>
               <Question
                 question={this.state.question}
@@ -64,19 +61,13 @@ class VerbDrillContainer extends Component {
               />
             </div>
           </div>
-          <div
-            id="revision-card"
-            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
-          >
+          <div id="revision-card" className="col-xs-11 col-centered">
             {this.state.showRevision && (
               <Revision data={this.state.question.revisionData} />
             )}
           </div>
 
-          <div
-            id="history-card"
-            className="col-xs-11 col-sm-11 col-md-8 col-lg-8 col-centered"
-          >
+          <div id="history-card" className="col-xs-11 col-centered">
             <GuessHistory history={this.state.history} />
           </div>
         </div>

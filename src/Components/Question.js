@@ -5,8 +5,7 @@ class Question extends Component {
     return (
       <div id="question-view">
         <h1>
-          {this.props.question.infinitive} - {this.props.question.tense} -{" "}
-          {this.props.pronoun.pronoun}
+          {`${this.props.question.tense} - ${this.props.pronoun.pronoun} - ${this.props.question.infinitive}`}
         </h1>
       </div>
     );
