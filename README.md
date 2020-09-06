@@ -1,8 +1,5 @@
 # French Verb Drills
 
-![Screenshot](screenshot.png)
-
-
 ## Available Scripts
 
 In the project directory, you can run:

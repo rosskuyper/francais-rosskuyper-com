@@ -13,12 +13,12 @@ class GuessHistory extends Component {
           <Thead>
             <Tr>
               <Th>#</Th>
-              <Th>Verb</Th>
-              <Th>Mode/Tense</Th>
-              <Th>Pronoun</Th>
-              <Th>Answer</Th>
-              <Th>Guess</Th>
-              <Th>Correct?</Th>
+              <Th>Verbe</Th>
+              <Th>Mode/Temps</Th>
+              <Th>Pronom</Th>
+              <Th>Solution</Th>
+              <Th>Réponse</Th>
+              <Th>Correcte?</Th>
             </Tr>
           </Thead>
           <Tbody>

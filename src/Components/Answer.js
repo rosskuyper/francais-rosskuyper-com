@@ -23,7 +23,7 @@ class Answer extends Component {
 
         {this.props.previous && (
           <p className="previousGuess">
-            <span>Correct!</span> {this.props.previous}
+            <span>Correcte!</span> {this.props.previous}
           </p>
         )}
       </div>
