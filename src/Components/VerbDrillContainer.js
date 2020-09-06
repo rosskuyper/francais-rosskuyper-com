@@ -142,29 +142,6 @@ class VerbDrillContainer extends Component {
     }
   }
 
-  /*
-   * Substitute accented characters in a string
-   */
-  foldAccents(inputString) {
-    const accentMap = {
-      á: "a",
-      é: "e",
-      ê: "e",
-      í: "i",
-      î: "i",
-      ó: "o",
-      ú: "u",
-    };
-    if (!inputString) {
-      return "";
-    }
-    let returnString = "";
-    for (let i = 0; i < inputString.length; i++) {
-      returnString += accentMap[inputString.charAt(i)] || inputString.charAt(i);
-    }
-    return returnString;
-  }
-
   capitalisePronouns(data) {
     data.verbs.forEach((verb, verbId) => {
       verb.tenses.forEach((tense, tenseId) => {
