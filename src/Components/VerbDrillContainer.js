@@ -134,25 +134,6 @@ class VerbDrillContainer extends Component {
       });
     }
   }
-
-  capitalisePronouns(data) {
-    data.verbs.forEach((verb, verbId) => {
-      verb.tenses.forEach((tense, tenseId) => {
-        tense.pronouns.forEach((pronoun, pronounId) => {
-          data.verbs[verbId].tenses[tenseId].pronouns[
-            pronounId
-          ].pronoun = this.capitalise(
-            data.verbs[verbId].tenses[tenseId].pronouns[pronounId].pronoun
-          );
-        });
-      });
-    });
-    return data;
-  }
-
-  capitalise(s) {
-    return s[0].toUpperCase() + s.slice(1);
-  }
 }
 
 export default VerbDrillContainer;
