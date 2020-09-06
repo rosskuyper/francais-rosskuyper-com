@@ -7,8 +7,6 @@ import GuessHistory from "./GuessHistory";
 
 import verbData from "../verbs.json";
 
-let audioContext;
-
 class VerbDrillContainer extends Component {
   constructor(props) {
     super(props);
@@ -28,11 +26,6 @@ class VerbDrillContainer extends Component {
     };
 
     this.checkAnswer = this.checkAnswer.bind(this);
-  }
-
-  componentWillMount() {
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new window.AudioContext();
   }
 
   /*
@@ -159,52 +152,6 @@ class VerbDrillContainer extends Component {
 
   capitalise(s) {
     return s[0].toUpperCase() + s.slice(1);
-  }
-
-  /*
-   * Hack to unlock HTML5 Audio on iOS
-   */
-  handleTouchEnd() {
-    const buffer = audioContext.createBuffer(1, 1, 22050);
-    const sourceBuffer = audioContext.createBufferSource();
-    sourceBuffer.buffer = buffer;
-    sourceBuffer.connect(audioContext.destination);
-    sourceBuffer.start(audioContext.currentTime);
-    //sourceBuffer.noteOn(0);
-  }
-
-  playSound(buffer) {
-    const sourceBuffer = audioContext.createBufferSource();
-    sourceBuffer.buffer = buffer;
-    sourceBuffer.connect(audioContext.destination);
-    sourceBuffer.start(audioContext.currentTime);
-  }
-
-  loadSound(file) {
-    const request = new XMLHttpRequest();
-    request.open("GET", file, true);
-    request.responseType = "arraybuffer";
-    request.onload = () => {
-      audioContext.decodeAudioData(request.response, (buffer) => {
-        this.playSound(buffer);
-      });
-    };
-    request.send();
-  }
-
-  randomPositiveSound() {
-    const positives = [
-      "sounds/oooooui.mp3",
-      "sounds/oui-tres-bien.mp3",
-      "sounds/voila.mp3",
-      "sounds/exactement.mp3",
-    ];
-    this.loadSound(positives[Math.floor(Math.random() * positives.length)]);
-  }
-
-  randomNegativeSound() {
-    const negatives = ["sounds/cest-non.mp3", "sounds/je-repond-non.mp3"];
-    this.loadSound(negatives[Math.floor(Math.random() * negatives.length)]);
   }
 }
 
