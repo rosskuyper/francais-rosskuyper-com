@@ -18,7 +18,7 @@ class GuessHistory extends Component {
               <Th>Pronom</Th>
               <Th>Solution</Th>
               <Th>Réponse</Th>
-              <Th>Correcte?</Th>
+              <Th>Correct?</Th>
             </Tr>
           </Thead>
           <Tbody>

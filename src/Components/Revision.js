@@ -19,8 +19,8 @@ class Revision extends Component {
           <Thead>
             <Tr>
               {/* Tense order matters and is set within the data */}
-              <Th>Pronoun</Th>
-              <Th>Present</Th>
+              <Th>Pronom</Th>
+              <Th>Présent</Th>
               <Th>Imparfait</Th>
               <Th>Futur</Th>
               <Th>P. Composé</Th>
