@@ -42,8 +42,12 @@ class GuessHistory extends Component {
                     <a
                       href={wordReferenceUrl(question.infinitive)}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      🔗 {question.infinitive}
+                      <span role="img" aria-label="external link">
+                        🔗
+                      </span>{" "}
+                      {question.infinitive}
                     </a>
                   </Td>
                   <Td>{question.tense}</Td>
