@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { Table, Thead, Tbody, Tr, Td, Th } from "react-super-responsive-table";
+import { stringify } from "query-string";
 
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
+const wordReferenceUrl = (infinitive) => {
+  const query = stringify({
+    v: infinitive,
+  });
+
+  return `https://www.wordreference.com/conj/FrVerbs.aspx?${query}`;
+};
 
 class GuessHistory extends Component {
   render() {
@@ -29,7 +38,14 @@ class GuessHistory extends Component {
                   className={isCorrect ? "guess-correct" : "guess-incorrect"}
                 >
                   <Td>{history.length - index}</Td>
-                  <Td>{question.infinitive}</Td>
+                  <Td>
+                    <a
+                      href={wordReferenceUrl(question.infinitive)}
+                      target="_blank"
+                    >
+                      🔗 {question.infinitive}
+                    </a>
+                  </Td>
                   <Td>{question.tense}</Td>
                   <Td>{question.pronoun.pronoun}</Td>
                   <Td>{question.pronoun.answer}</Td>
