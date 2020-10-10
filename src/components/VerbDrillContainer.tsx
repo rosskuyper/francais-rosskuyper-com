@@ -1,141 +1,76 @@
-import React, {ChangeEvent, Component, FormEvent} from 'react'
+import React, {ChangeEvent, FormEvent, useState} from 'react'
 import Question from './Question'
 import Answer from './Answer'
 import Stats from './Stats'
 import Revision from './Revision'
 import GuessHistory from './GuessHistory'
+import {useVerbQuestion} from '../hooks/useVerbQuestion'
 
-import verbData from '../data/verbs.json'
-import {getRandomIndex} from '../utils/utils'
+const VerbDrillContainer = (): JSX.Element => {
+  const [question, nextQuestion] = useVerbQuestion()
 
-type VerbDrillState = {
-  data: any
-  question: any
-  history: any[]
-  pronoun: any
-  totalAnswered: number
-  totalCorrect: number
-  streak: number
-  showRevision: boolean
-  previous: any | null
-  guess: string
-}
+  const [history, setHistory] = useState<any[]>([])
+  const [totalAnswered, setTotalAnswered] = useState<number>(0)
+  const [totalCorrect, setTotalCorrect] = useState<number>(0)
+  const [streak, setStreak] = useState<number>(0)
+  const [showRevision, setShowRevision] = useState<boolean>(false)
+  const [previous, setPrevious] = useState<any | null>(null)
+  const [guess, setGuess] = useState<string>('')
 
-class VerbDrillContainer extends Component {
-  state: VerbDrillState
-
-  constructor(props: any) {
-    super(props)
-
-    this.state = {
-      data: verbData,
-      question: this.getQuestion(verbData),
-      history: [],
-      pronoun: {},
-      totalAnswered: 0,
-      totalCorrect: 0,
-      streak: 0,
-      showRevision: false,
-      previous: null,
-      guess: '',
-    }
-  }
-
-  /*
-   * Display the question, answer and stats components
-   */
-  render() {
-    return (
-      <div className="container-fluid">
-        <div className="row">
-          <div id="question-card" className="col-xs-11 col-centered">
-            <div>
-              <Question question={this.state.question} pronoun={this.state.question.pronoun} />
-              <Answer
-                previous={this.state.previous}
-                pronoun={this.state.question.pronoun}
-                checkAnswer={this.checkAnswer}
-                handleAnswerChange={this.handleAnswerChange}
-                guess={this.state.guess}
-              />
-              <Stats
-                totalAnswered={this.state.totalAnswered}
-                totalCorrect={this.state.totalCorrect}
-                streak={this.state.streak}
-              />
-            </div>
-          </div>
-          <div id="revision-card" className="col-xs-11 col-centered">
-            {this.state.showRevision && <Revision data={this.state.question.revisionData} />}
-          </div>
-
-          <div id="history-card" className="col-xs-11 col-centered">
-            <GuessHistory history={this.state.history} />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  /*
-   * Randomly select a new verb, tense and pronoun, and return a question object
-   */
-  getQuestion = (data: any) => {
-    const verbIndex = getRandomIndex(0, data.verbs.length - 1)
-    const tenseIndex = getRandomIndex(0, data.verbs[verbIndex].tenses.length - 1)
-    const pronounIndex = getRandomIndex(0, data.verbs[verbIndex].tenses[tenseIndex].pronouns.length - 1)
-    const questionData = {
-      infinitive: data.verbs[verbIndex].infinitive,
-      translation: data.verbs[verbIndex].translation,
-      tense: data.verbs[verbIndex].tenses[tenseIndex].name,
-      pronoun: data.verbs[verbIndex].tenses[tenseIndex].pronouns[pronounIndex],
-      revisionData: data.verbs[verbIndex],
-    }
-    return questionData
-  }
-
-  handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      guess: event.target.value,
-    })
-  }
+  const handleGuessChange = (event: ChangeEvent<HTMLInputElement>) => setGuess(event.target.value)
 
   /*
    * Check submitted answer against data, disregarding accents.
    */
-  checkAnswer = (event: FormEvent) => {
+  const checkAnswer = (event: FormEvent) => {
     event.preventDefault()
 
-    const {question} = this.state
-
     const answer = question.pronoun.answer.toLowerCase()
-    const guess = this.state.guess.toLowerCase().trim()
+    const isCorrect = answer === guess.toLowerCase().trim()
 
-    const isCorrect = guess === answer
-
-    const history = [{question, guess, isCorrect}, ...this.state.history]
+    setHistory([{question, guess, isCorrect}, ...history])
+    setTotalAnswered(totalAnswered + 1)
 
     if (isCorrect) {
-      this.setState({
-        totalAnswered: this.state.totalAnswered + 1,
-        totalCorrect: this.state.totalCorrect + 1,
-        streak: this.state.streak + 1,
-        question: this.getQuestion(this.state.data),
-        showRevision: false,
-        previous: `${question.pronoun.pronoun} ${question.pronoun.answer}`,
-        history,
-        guess: '',
-      })
+      setTotalCorrect(totalCorrect + 1)
+      setStreak(streak + 1)
+      setShowRevision(false)
+      setPrevious(`${question.pronoun.pronoun} ${question.pronoun.answer}`)
+      setGuess('')
+      nextQuestion()
     } else {
-      this.setState({
-        streak: 0,
-        totalAnswered: this.state.totalAnswered + 1,
-        showRevision: true,
-        previous: null,
-        history,
-      })
+      setStreak(0)
+      setShowRevision(true)
+      setPrevious(null)
     }
   }
+
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        <div id="question-card" className="col-xs-11 col-centered">
+          <div>
+            <Question question={question} pronoun={question.pronoun} />
+            <Answer
+              previous={previous}
+              pronoun={question.pronoun}
+              checkAnswer={checkAnswer}
+              handleAnswerChange={handleGuessChange}
+              guess={guess}
+            />
+            <Stats totalAnswered={totalAnswered} totalCorrect={totalCorrect} streak={streak} />
+          </div>
+        </div>
+        <div id="revision-card" className="col-xs-11 col-centered">
+          {showRevision && <Revision data={question.revisionData} />}
+        </div>
+
+        <div id="history-card" className="col-xs-11 col-centered">
+          <GuessHistory history={history} />
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default VerbDrillContainer
