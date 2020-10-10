@@ -5,22 +5,22 @@ import {getRandomIndex} from '../utils/utils'
 /**
  * All the question / verb types
  */
-type Pronoun = {
+export type Pronoun = {
   pronoun: string
   answer: string
 }
 
-type Tense = {
+export type Tense = {
   name: string
   pronouns: Pronoun[]
 }
 
-type Verb = {
+export type Verb = {
   infinitive: string
   tenses: Tense[]
 }
 
-type Question = {
+export type Question = {
   infinitive: string
   tense: string
   pronoun: Pronoun

@@ -1,15 +1,15 @@
 import React from 'react'
 //@ts-ignore
-import {Table, Thead, Tbody, Tr, Th} from 'react-super-responsive-table'
-import RevisionRow from './RevisionRow'
+import {Table, Thead, Tbody, Tr, Td, Th} from 'react-super-responsive-table'
+import {Verb} from '../hooks/useVerbQuestion'
 
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 type RevisionProps = {
-  data: any
+  verb: Verb
 }
 
-const Revision = ({data}: RevisionProps): JSX.Element => {
+const Revision = ({verb}: RevisionProps): JSX.Element => {
   return (
     <div id="revision-view">
       <Table className="table table-striped">
@@ -30,8 +30,16 @@ const Revision = ({data}: RevisionProps): JSX.Element => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.tenses[0].pronouns.map((_pronoun: any, id: number) => {
-            return <RevisionRow key={id} data={data} pronounIndex={id} />
+          {verb.tenses[0].pronouns.map((pronoun, tenseIndex) => {
+            return (
+              <Tr id={tenseIndex}>
+                <Td>{pronoun.pronoun}</Td>
+
+                {verb.tenses.map((tense, index) => {
+                  return <Td key={index}>{tense.pronouns[tenseIndex].answer}</Td>
+                })}
+              </Tr>
+            )
           })}
         </Tbody>
       </Table>

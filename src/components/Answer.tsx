@@ -1,9 +1,10 @@
 import React, {ChangeEventHandler, FormEventHandler} from 'react'
+import {Pronoun} from '../hooks/useVerbQuestion'
 
 type AnswerProps = {
   previous: string
   guess: string
-  pronoun: any
+  pronoun: Pronoun
   checkAnswer: FormEventHandler
   handleAnswerChange: ChangeEventHandler
 }

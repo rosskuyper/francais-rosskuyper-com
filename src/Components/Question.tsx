@@ -1,16 +1,16 @@
 import React from 'react'
+import {Question} from '../hooks/useVerbQuestion'
 
 type QuestionProps = {
-  question: any
-  pronoun: any
+  question: Question
 }
 
-const Question = ({question, pronoun}: QuestionProps): JSX.Element => {
+const QuestionBlock = ({question}: QuestionProps): JSX.Element => {
   return (
     <div id="question-view">
-      <h1>{`${question.tense} - ${pronoun.pronoun} - ${question.infinitive}`}</h1>
+      <h1>{`${question.tense} - ${question.pronoun.pronoun} - ${question.infinitive}`}</h1>
     </div>
   )
 }
 
-export default Question
+export default QuestionBlock

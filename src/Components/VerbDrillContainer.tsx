@@ -1,20 +1,20 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react'
-import Question from './Question'
+import QuestionBlock from './Question'
 import Answer from './Answer'
 import Stats from './Stats'
 import Revision from './Revision'
-import GuessHistory from './GuessHistory'
+import GuessHistory, {VerbQuestionHistoryItem} from './GuessHistory'
 import {useVerbQuestion} from '../hooks/useVerbQuestion'
 
 const VerbDrillContainer = (): JSX.Element => {
   const [question, nextQuestion] = useVerbQuestion()
 
-  const [history, setHistory] = useState<any[]>([])
+  const [history, setHistory] = useState<VerbQuestionHistoryItem[]>([])
   const [totalAnswered, setTotalAnswered] = useState<number>(0)
   const [totalCorrect, setTotalCorrect] = useState<number>(0)
   const [streak, setStreak] = useState<number>(0)
   const [showRevision, setShowRevision] = useState<boolean>(false)
-  const [previous, setPrevious] = useState<any | null>(null)
+  const [previous, setPrevious] = useState<string>('')
   const [guess, setGuess] = useState<string>('')
 
   const handleGuessChange = (event: ChangeEvent<HTMLInputElement>) => setGuess(event.target.value)
@@ -41,16 +41,18 @@ const VerbDrillContainer = (): JSX.Element => {
     } else {
       setStreak(0)
       setShowRevision(true)
-      setPrevious(null)
+      setPrevious('')
     }
   }
+
+  console.log(question.revisionData)
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div id="question-card" className="col-xs-11 col-centered">
           <div>
-            <Question question={question} pronoun={question.pronoun} />
+            <QuestionBlock question={question} />
             <Answer
               previous={previous}
               pronoun={question.pronoun}
@@ -62,7 +64,7 @@ const VerbDrillContainer = (): JSX.Element => {
           </div>
         </div>
         <div id="revision-card" className="col-xs-11 col-centered">
-          {showRevision && <Revision data={question.revisionData} />}
+          {showRevision && <Revision verb={question.revisionData} />}
         </div>
 
         <div id="history-card" className="col-xs-11 col-centered">
