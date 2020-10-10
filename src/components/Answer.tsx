@@ -5,14 +5,14 @@ type AnswerProps = {
   previous: string
   guess: string
   pronoun: Pronoun
-  checkAnswer: FormEventHandler
+  onAnswerSubmit: FormEventHandler
   handleAnswerChange: ChangeEventHandler
 }
 
 const Answer = (props: AnswerProps): JSX.Element => {
   return (
     <div>
-      <form onSubmit={props.checkAnswer}>
+      <form onSubmit={props.onAnswerSubmit}>
         <span className="pronoun">
           <p>{props.pronoun.pronoun}</p>
         </span>

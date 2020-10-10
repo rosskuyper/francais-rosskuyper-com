@@ -3,49 +3,24 @@ import QuestionBlock from './Question'
 import Answer from './Answer'
 import Stats from './Stats'
 import Revision from './Revision'
-import GuessHistory, {VerbQuestionHistoryItem} from './GuessHistory'
-import {useVerbQuestion} from '../hooks/useVerbQuestion'
+import GuessHistory from './GuessHistory'
+import {useVerbDrill} from '../hooks/useVerbDrill'
 
 const VerbDrillContainer = (): JSX.Element => {
-  const [question, nextQuestion] = useVerbQuestion()
-
-  const [history, setHistory] = useState<VerbQuestionHistoryItem[]>([])
-  const [totalAnswered, setTotalAnswered] = useState<number>(0)
-  const [totalCorrect, setTotalCorrect] = useState<number>(0)
-  const [streak, setStreak] = useState<number>(0)
-  const [showRevision, setShowRevision] = useState<boolean>(false)
-  const [previous, setPrevious] = useState<string>('')
+  const [{question, history, totalAnswered, totalCorrect, streak, showRevision, previous}, logAnswer] = useVerbDrill()
   const [guess, setGuess] = useState<string>('')
 
   const handleGuessChange = (event: ChangeEvent<HTMLInputElement>) => setGuess(event.target.value)
 
-  /*
-   * Check submitted answer against data, disregarding accents.
-   */
-  const checkAnswer = (event: FormEvent) => {
+  const onAnswerSubmit = (event: FormEvent) => {
     event.preventDefault()
 
-    const answer = question.pronoun.answer.toLowerCase()
-    const isCorrect = answer === guess.toLowerCase().trim()
-
-    setHistory([{question, guess, isCorrect}, ...history])
-    setTotalAnswered(totalAnswered + 1)
+    const isCorrect = logAnswer(guess)
 
     if (isCorrect) {
-      setTotalCorrect(totalCorrect + 1)
-      setStreak(streak + 1)
-      setShowRevision(false)
-      setPrevious(`${question.pronoun.pronoun} ${question.pronoun.answer}`)
       setGuess('')
-      nextQuestion()
-    } else {
-      setStreak(0)
-      setShowRevision(true)
-      setPrevious('')
     }
   }
-
-  console.log(question.revisionData)
 
   return (
     <div className="container-fluid">
@@ -56,7 +31,7 @@ const VerbDrillContainer = (): JSX.Element => {
             <Answer
               previous={previous}
               pronoun={question.pronoun}
-              checkAnswer={checkAnswer}
+              onAnswerSubmit={onAnswerSubmit}
               handleAnswerChange={handleGuessChange}
               guess={guess}
             />

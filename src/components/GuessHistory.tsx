@@ -2,7 +2,7 @@ import React from 'react'
 //@ts-ignore
 import {Table, Thead, Tbody, Tr, Td, Th} from 'react-super-responsive-table'
 import {stringify} from 'query-string'
-import {Question} from '../hooks/useVerbQuestion'
+import {VerbQuestionHistoryItem} from '../hooks/useVerbDrill'
 
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
@@ -12,12 +12,6 @@ const wordReferenceUrl = (infinitive: any) => {
   })
 
   return `https://www.wordreference.com/conj/FrVerbs.aspx?${query}`
-}
-
-export type VerbQuestionHistoryItem = {
-  question: Question
-  guess: string
-  isCorrect: boolean
 }
 
 export type GuessHistoryProps = {
