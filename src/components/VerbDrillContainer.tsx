@@ -5,7 +5,8 @@ import Stats from './Stats'
 import Revision from './Revision'
 import GuessHistory from './GuessHistory'
 
-import verbData from '../verbs.json'
+import verbData from '../data/verbs.json'
+import {getRandomIndex} from '../utils/utils'
 
 type VerbDrillState = {
   data: any
@@ -80,9 +81,9 @@ class VerbDrillContainer extends Component {
    * Randomly select a new verb, tense and pronoun, and return a question object
    */
   getQuestion = (data: any) => {
-    const verbIndex = this.getRandomIndex(0, data.verbs.length - 1)
-    const tenseIndex = this.getRandomIndex(0, data.verbs[verbIndex].tenses.length - 1)
-    const pronounIndex = this.getRandomIndex(0, data.verbs[verbIndex].tenses[tenseIndex].pronouns.length - 1)
+    const verbIndex = getRandomIndex(0, data.verbs.length - 1)
+    const tenseIndex = getRandomIndex(0, data.verbs[verbIndex].tenses.length - 1)
+    const pronounIndex = getRandomIndex(0, data.verbs[verbIndex].tenses[tenseIndex].pronouns.length - 1)
     const questionData = {
       infinitive: data.verbs[verbIndex].infinitive,
       translation: data.verbs[verbIndex].translation,
@@ -91,13 +92,6 @@ class VerbDrillContainer extends Component {
       revisionData: data.verbs[verbIndex],
     }
     return questionData
-  }
-
-  /*
-   * Return a random integer with max and min.  Used to select a question array index.
-   */
-  getRandomIndex = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
   handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
