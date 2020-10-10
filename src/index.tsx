@@ -5,5 +5,5 @@ import './index.css'
 import VerbDrillContainer from './Components/VerbDrillContainer'
 import registerServiceWorker from './registerServiceWorker'
 
-ReactDOM.render(<VerbDrillContainer dataUrl='https://frenchverbs.firebaseio.com/'/>, document.getElementById('root'))
+ReactDOM.render(<VerbDrillContainer />, document.getElementById('root'))
 registerServiceWorker()
