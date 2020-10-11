@@ -7,11 +7,15 @@ import GuessHistory from './GuessHistory'
 import {useVerbDrill} from '../hooks/useVerbDrill'
 
 const VerbDrillContainer = (): JSX.Element => {
-  const [{question, history, totalAnswered, totalCorrect, streak, showRevision, previous}, logAnswer] = useVerbDrill()
-  const [guess, setGuess] = useState<string>('')
+  // The verb drill hook handles getting a question and logging the previous guesses
+  const [drillState, logAnswer] = useVerbDrill()
+  const {question, history, totalAnswered, totalCorrect, streak, previousCorrect, previous} = drillState
 
+  // Our UI component is responsible for what the user is actually typing
+  const [guess, setGuess] = useState('')
   const handleGuessChange = (event: ChangeEvent<HTMLInputElement>) => setGuess(event.target.value)
 
+  // Handle the form submission and pass through to drill hook
   const onAnswerSubmit = (event: FormEvent) => {
     event.preventDefault()
 
@@ -38,8 +42,9 @@ const VerbDrillContainer = (): JSX.Element => {
             <Stats totalAnswered={totalAnswered} totalCorrect={totalCorrect} streak={streak} />
           </div>
         </div>
+
         <div id="revision-card" className="col-xs-11 col-centered">
-          {showRevision && <Revision verb={question.revisionData} />}
+          {previousCorrect === false && <Revision verb={question.revisionData} />}
         </div>
 
         <div id="history-card" className="col-xs-11 col-centered">

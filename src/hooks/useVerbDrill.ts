@@ -13,8 +13,8 @@ export type DrillState = {
   totalCorrect: number
   streak: number
   history: VerbQuestionHistoryItem[]
-  showRevision: boolean
-  previous: string
+  previousCorrect: boolean | undefined
+  previous: string | undefined
 }
 
 export type UseVerbDrillHook = [DrillState, (guess: string) => boolean]
@@ -25,20 +25,20 @@ export const useVerbDrill = (): UseVerbDrillHook => {
   const [totalAnswered, setTotalAnswered] = useState<number>(0)
   const [totalCorrect, setTotalCorrect] = useState<number>(0)
   const [streak, setStreak] = useState<number>(0)
-  const [showRevision, setShowRevision] = useState<boolean>(false)
-  const [previous, setPrevious] = useState<string>('')
+  const [previousCorrect, setpreviousCorrect] = useState<boolean>()
+  const [previous, setPrevious] = useState<string>()
 
   const logCorrectAnswer = () => {
     setTotalCorrect(totalCorrect + 1)
     setStreak(streak + 1)
-    setShowRevision(false)
+    setpreviousCorrect(true)
     setPrevious(`${question.pronoun.pronoun} ${question.pronoun.answer}`)
     nextQuestion()
   }
 
   const logIncorrectAnswer = () => {
     setStreak(0)
-    setShowRevision(true)
+    setpreviousCorrect(false)
     setPrevious('')
   }
 
@@ -64,7 +64,7 @@ export const useVerbDrill = (): UseVerbDrillHook => {
     totalAnswered,
     totalCorrect,
     streak,
-    showRevision,
+    previousCorrect,
     previous,
   }
 

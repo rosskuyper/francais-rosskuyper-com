@@ -2,7 +2,7 @@ import React, {ChangeEventHandler, FormEventHandler} from 'react'
 import {Pronoun} from '../hooks/useVerbQuestion'
 
 type AnswerProps = {
-  previous: string
+  previous: string | undefined
   guess: string
   pronoun: Pronoun
   onAnswerSubmit: FormEventHandler
