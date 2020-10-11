@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react'
-import QuestionBlock from './Question'
 import Answer from './Answer'
 import Stats from './Stats'
 import Revision from './Revision'
 import GuessHistory from './GuessHistory'
 import {useVerbDrill} from '../hooks/useVerbDrill'
+import VerbDrillSettings from './VerbDrillSettings'
 
 const VerbDrillContainer = (): JSX.Element => {
   // The verb drill hook handles getting a question and logging the previous guesses
@@ -31,7 +31,13 @@ const VerbDrillContainer = (): JSX.Element => {
       <div className="row">
         <div id="question-card" className="col-xs-11 col-centered">
           <div>
-            <QuestionBlock question={question} />
+            <div id="question-view">
+              <div className="pull-right">
+                <VerbDrillSettings />
+              </div>
+              <h1>{`${question.tense} - ${question.pronoun.pronoun} - ${question.infinitive}`}</h1>
+            </div>
+
             <Answer
               previous={previous}
               pronoun={question.pronoun}

@@ -105,3 +105,29 @@ h1 {
 .guess-incorrect > :last-child {
   color: red;
 }
+
+.btn-stripped {
+  background: transparent;
+  border: none;
+}
+
+.btn-stripped:focus {
+  outline: none;
+}
+
+.btn-stripped:active .glyphicon {
+  opacity: 0.7;
+}
+
+.ReactModal__Content {
+  margin: 30px;
+  max-width: 650px;
+  width: 100%;
+}
+
+.ReactModal__Overlay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
